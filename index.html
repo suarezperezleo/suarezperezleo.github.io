@@ -197,7 +197,7 @@
         <section id="contacto" class="content-section hidden items-center"><h2 class="text-4xl font-bold text-center mb-8">Contacto</h2><div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg"><p class="text-slate-500 text-center">Aquí se mostrará la información de contacto y un formulario.</p></div></section>
     </main>
 
-    <footer class="bg-white mt-12 py-6 border-t"><div class="container mx-auto px-6 text-center text-slate-500"><p>&copy; Leo Suárez. 2025 Justicia Digital. Todos los derechos reservados.</p></div></footer>
+    <footer class="bg-white mt-12 py-6 border-t"><div class="container mx-auto px-6 text-center text-slate-500"><p>&copy; 2024 Justicia Digital. Todos los derechos reservados.</p></div></footer>
 
     <script>
         const sections = document.querySelectorAll('.content-section');
@@ -216,7 +216,6 @@
                 if (desktopLink) desktopLink.classList.add('nav-link-active');
             }
             mobileMenu.classList.add('hidden');
-            if (sectionId === 'inicio') window.scrollTo(0, 0);
         }
 
         function showTab(tabId) {
@@ -232,7 +231,16 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            showSection('inicio', document.querySelector('a[href="#inicio"]'));
+            const hash = window.location.hash;
+            // Verifica si el hash corresponde a una sección principal
+            if (hash && document.getElementById(hash.substring(1))) {
+                const sectionId = hash.substring(1);
+                const link = document.querySelector(`a[href="#${sectionId}"]`);
+                showSection(sectionId, link);
+            } else {
+                // Si no hay hash o no corresponde a una sección, muestra el inicio
+                showSection('inicio', document.querySelector('a[href="#inicio"]'));
+            }
         });
 
         mobileMenuButton.addEventListener('click', () => {
@@ -242,4 +250,3 @@
 
 </body>
 </html>
-
