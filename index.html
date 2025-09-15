@@ -105,6 +105,67 @@
             width: 24px;
             height: 24px;
         }
+
+        /* --- Estilos de la Línea de Tiempo --- */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: #9ca3af; /* gris-400 */
+        }
+        .timeline-item {
+            position: relative;
+            width: 50%;
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 2rem;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 2rem;
+        }
+        .timeline-dot {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border: 4px solid #3b82f6; /* azul-500 */
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+            transform: translateX(50%);
+        }
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+            transform: translateX(-50%);
+        }
+        .content-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .timeline-card.expanded .content-details {
+            max-height: 500px; /* Ajustar según sea necesario */
+        }
+        .participant-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -115,6 +176,7 @@
             <div class="hidden md:flex space-x-8">
                 <a href="#procedimientos" class="nav-link text-gray-600 hover:text-blue-700 transition duration-300" onclick="showSection('procedimientos', this)">Procedimientos Corte IDH</a>
                 <a href="#decalogo" class="nav-link text-gray-600 hover:text-blue-700 transition duration-300" onclick="showSection('decalogo', this)">Decálogo Profesional</a>
+                <a href="#linea-tiempo" class="nav-link text-gray-600 hover:text-blue-700 transition duration-300" onclick="showSection('linea-tiempo', this)">Línea de Tiempo</a>
                 <a href="#chatbot" class="nav-link text-gray-600 hover:text-blue-700 transition duration-300" onclick="showSection('chatbot', this)">Asistente IA</a>
                 <a href="#contacto" class="nav-link text-gray-600 hover:text-blue-700 transition duration-300" onclick="showSection('contacto', this)">Contacto</a>
             </div>
@@ -125,6 +187,7 @@
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
              <a href="#procedimientos" class="block py-2 text-gray-600" onclick="showSection('procedimientos', this)">Procedimientos Corte IDH</a>
              <a href="#decalogo" class="block py-2 text-gray-600" onclick="showSection('decalogo', this)">Decálogo Profesional</a>
+             <a href="#linea-tiempo" class="block py-2 text-gray-600" onclick="showSection('linea-tiempo', this)">Línea de Tiempo</a>
              <a href="#chatbot" class="block py-2 text-gray-600" onclick="showSection('chatbot', this)">Asistente IA</a>
              <a href="#contacto" class="block py-2 text-gray-600" onclick="showSection('contacto', this)">Contacto</a>
         </div>
@@ -141,7 +204,6 @@
         <section id="procedimientos" class="content-section hidden">
             <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Procedimientos ante la Corte IDH</h2>
             
-            <!-- Pestañas de Navegación -->
             <div class="flex justify-center mb-10">
                 <div class="flex space-x-4 p-2 bg-slate-200 rounded-full">
                     <button id="tab-contencioso" class="tab-button tab-button-active" onclick="showTab('contencioso')">Procedimiento Contencioso</button>
@@ -149,9 +211,9 @@
                 </div>
             </div>
 
-            <!-- Contenido Procedimiento Contencioso -->
             <div id="content-contencioso" class="tab-content">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- ... contenido del procedimiento contencioso ... -->
                     <div class="flex flex-col space-y-8">
                         <div class="stage border-cyan-500"><h3 class="stage-title text-cyan-600">1. Inicio del Procedimiento</h3><div class="card"><p class="text-slate-600">El caso es sometido a la Corte por la <strong>Comisión IDH</strong> o un <strong>Estado Parte</strong>, solo después de agotarse el procedimiento ante la Comisión.</p></div></div>
                         <div class="stage border-cyan-500"><h3 class="stage-title text-cyan-600">2. Partes que Intervienen</h3><div class="card"><ul class="list-disc list-inside text-slate-600 space-y-1"><li>La Comisión IDH</li><li>Las presuntas víctimas y sus representantes</li><li>El Estado demandado</li></ul></div></div>
@@ -171,7 +233,6 @@
                 </div>
             </div>
 
-            <!-- Contenido Procedimiento No Contencioso -->
             <div id="content-no-contencioso" class="tab-content hidden">
                  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="flex flex-col items-center space-y-8"><h3 class="text-2xl font-bold text-slate-700">A. Inicio</h3><div class="card border-t-4 border-blue-500 w-full"><h4 class="font-bold text-blue-600 mb-2">Solicitantes</h4><ul class="list-disc list-inside text-slate-600 space-y-1"><li>Estados Miembros (OEA)</li><li>Órganos Principales (OEA)</li></ul></div><div class="text-2xl text-slate-400">↓</div><div class="card border-t-4 border-blue-500 w-full"><h4 class="font-bold text-blue-600 mb-2">Objeto de la Consulta</h4><ul class="list-disc list-inside text-slate-600 space-y-1"><li>Interpretación de tratados</li><li>Compatibilidad de leyes</li></ul></div></div>
@@ -192,6 +253,18 @@
                  <div class="decalogo-item"><div class="decalogo-icon icon-professional"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect></svg></div><div><h4 class="font-bold">Diligencia Profesional</h4><p class="text-sm text-slate-600">Ejercer con máxima preparación, dedicación y pericia.</p></div></div>
             </div>
         </section>
+        
+        <!-- INICIO: Nueva Sección de Línea de Tiempo -->
+        <section id="linea-tiempo" class="content-section hidden">
+             <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold">Línea de Tiempo Interactiva</h2>
+                <p class="text-lg text-slate-600 mt-2">Audiencia Pública sobre Medidas Urgentes: Caso Vélez Loor Vs. Panamá</p>
+            </div>
+            <div id="timeline" class="relative timeline-container py-8 w-full max-w-5xl mx-auto">
+                <!-- Las intervenciones se insertarán aquí dinámicamente -->
+            </div>
+        </section>
+        <!-- FIN: Nueva Sección de Línea de Tiempo -->
 
         <section id="chatbot" class="content-section hidden items-center"><h2 class="text-4xl font-bold text-center mb-8">Asistente Jurídico con IA</h2><div class="w-full max-w-2xl h-96 bg-white rounded-lg shadow-lg flex justify-center items-center"><p class="text-slate-500">Próximamente: Un agente inteligente para resolver tus dudas.</p></div></section>
         <section id="contacto" class="content-section hidden items-center"><h2 class="text-4xl font-bold text-center mb-8">Contacto</h2><div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg"><p class="text-slate-500 text-center">Aquí se mostrará la información de contacto y un formulario.</p></div></section>
@@ -212,6 +285,7 @@
             
             navLinks.forEach(link => link.classList.remove('nav-link-active'));
             if (clickedLink) {
+                // Selecciona el enlace tanto en el menú de escritorio como en el móvil si existen
                 const desktopLink = document.querySelector(`.hidden.md\\:flex a[href="#${sectionId}"]`);
                 if (desktopLink) desktopLink.classList.add('nav-link-active');
             }
@@ -232,13 +306,11 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash;
-            // Verifica si el hash corresponde a una sección principal
             if (hash && document.getElementById(hash.substring(1))) {
                 const sectionId = hash.substring(1);
                 const link = document.querySelector(`a[href="#${sectionId}"]`);
                 showSection(sectionId, link);
             } else {
-                // Si no hay hash o no corresponde a una sección, muestra el inicio
                 showSection('inicio', document.querySelector('a[href="#inicio"]'));
             }
         });
@@ -246,7 +318,72 @@
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+
+        // --- Lógica para la Línea de Tiempo ---
+        const timelineData = [
+            { type: 'corte', icon: '⚖️', participant: 'Jueza Elizabeth Odio Benito', role: 'Presidenta de la Corte IDH', startTime: '00:00:00', content: `Da inicio formal a la audiencia pública. Explica el objetivo: recibir información sobre las medidas urgentes dictadas para proteger a las personas migrantes en las ERM La Peñita y Lajas Blancas en el contexto de la pandemia de COVID-19. Presenta a las partes convocadas.` },
+            { type: 'representante', icon: '🗣️', participant: 'Gisela De León', role: 'Abogada de CEJIL', startTime: '00:04:10', content: `Expone el contexto de riesgo extremo. Describe un hacinamiento crítico en la ERM La Peñita, superando en **más del 700% su capacidad**. Denuncia la falta de acceso a agua potable, saneamiento adecuado y atención médica. Sostiene que la situación, agravada por el COVID-19, cumple con los requisitos de extrema gravedad, urgencia y riesgo de daño irreparable.` },
+            { type: 'victima', icon: '👤', participant: 'Jesús Tranquilino Vélez Loor', role: 'Víctima', startTime: '00:19:15', content: `Ofrece su testimonio personal, conectando su caso original con la situación actual. Afirma que, a pesar de los años, el Estado de Panamá "sigue deteniendo a personas migrantes y no cuenta con los centros adecuados para ello". Expresa su temor de que la historia se repita.` },
+            { type: 'representante', icon: '🗣️', participant: 'Marcela Martino', role: 'Directora Adjunta de CEJIL', startTime: '00:22:50', content: `Detalla deficiencias específicas: alimentación de mala calidad, falta de atención diferenciada para niños y mujeres embarazadas. Advierte sobre un aumento en la violencia de género y desnutrición infantil. Solicita a la Corte ratificar y mantener las medidas de protección.` },
+            { type: 'comision', icon: '🌍', participant: 'Comisionada Julissa Mantilla Falcón', role: 'Relatora sobre Derechos de Personas Migrantes (CIDH)', startTime: '00:37:30', content: `La Comisión respalda mantener las medidas provisionales. Subraya la vulnerabilidad agravada de las personas en movilidad humana y considera que la información del Estado es insuficiente para demostrar que el riesgo ha desaparecido.` },
+            { type: 'estado', icon: '🇵🇦', participant: 'Federico Alfaro Boyd', role: 'Viceministro de Relaciones Exteriores de Panamá', startTime: '00:52:00', content: `Reconoce la migración por el Darién como un "reto regional". Enfatiza que Panamá es un país de tránsito y la crisis se agudizó por el cierre de fronteras. Asegura el compromiso del Estado con los derechos humanos y la colaboración internacional.` },
+            { type: 'estado', icon: '🇵🇦', participant: 'Samira Gozaine y Ivette Berrío', role: 'Directora de Migración y Viceministra de Salud', startTime: '01:00:15', content: `**Gozaine (Migración):** Explica que son "Estaciones de Recepción" y no detenciones. Detalla acciones como la habilitación de Lajas Blancas para aislar casos COVID. <br> **Berrío (Salud, 01:14:30):** Describe la respuesta sanitaria, incluyendo equipos de salud e hisopados. Admite "nudos críticos" como el hacinamiento y barreras culturales.` },
+            { type: 'estado', icon: '🇵🇦', participant: 'Ivor Pitti', role: 'Viceministro de Seguridad Pública de Panamá', startTime: '01:24:50', content: `Informa sobre inversiones en infraestructura para mejorar condiciones y reducir hacinamiento. Menciona la construcción de nuevas estaciones, aunque reconoce demoras y los desafíos logísticos de operar en una zona tan remota.` },
+            { type: 'fuente_externa', icon: '🔍', participant: 'Maribel Coco de Garibaldi', role: 'Defensora del Pueblo de Panamá', startTime: '01:35:10', content: `Actúa como fuente independiente. Confirma que su oficina ha visitado las estaciones y constatado las "malas condiciones". Corrobora las quejas de los migrantes sobre la alimentación, validando las denuncias de las representantes.` },
+            { type: 'corte', icon: '⚖️', participant: 'Jueces y Juezas de la Corte IDH', role: 'Pleno de la Corte', startTime: '01:45:00', content: `Los miembros de la Corte realizan preguntas directas a todas las partes para aclarar datos sobre cifras de hacinamiento, protocolos de salud, acceso a agua y plazos para nuevas instalaciones. La audiencia concluye a las 02:04:00.` }
+        ];
+
+        const timelineContainer = document.getElementById('timeline');
+        if (timelineContainer) {
+            const iconColors = {
+                corte: 'bg-indigo-600',
+                representante: 'bg-green-600',
+                victima: 'bg-yellow-600',
+                comision: 'bg-sky-600',
+                estado: 'bg-red-600',
+                fuente_externa: 'bg-gray-600'
+            };
+
+            timelineData.forEach(item => {
+                const itemHTML = `
+                    <div class="timeline-item flex">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer w-full transform hover:scale-105 transition-transform duration-300">
+                            <div class="flex items-start space-x-4">
+                                 <div class="participant-icon ${iconColors[item.type] || 'bg-gray-500'}">
+                                    ${item.icon}
+                                </div>
+                                <div class="flex-grow">
+                                    <span class="text-sm font-semibold text-gray-500">
+                                        Minuto: ${item.startTime}
+                                    </span>
+                                    <h3 class="font-bold text-lg mt-1">${item.participant}</h3>
+                                    <p class="text-sm text-gray-500">${item.role}</p>
+                                    <div class="content-details mt-4 text-gray-700">
+                                        <p>${item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-blue-700">$1</strong>')}</p>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400 transform transition-transform duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.innerHTML += itemHTML;
+            });
+
+            document.querySelectorAll('.timeline-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('expanded');
+                    card.querySelector('.text-gray-400').classList.toggle('rotate-180');
+                });
+            });
+        }
     </script>
 
 </body>
 </html>
+
